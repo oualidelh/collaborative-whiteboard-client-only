@@ -461,7 +461,7 @@ export function StylePicker({
   const [isTimeout, setIsTimeout] = useState<boolean>(false);
   const [enhanceBackground, setEnhanceBackground] = useState<boolean>(true);
   const [fillEmptySpaces, setFillEmptySpaces] = useState<boolean>(true);
-  const [processingTime, setProcessingTime] = useState<number>(0);
+  const [, setProcessingTime] = useState<number>(0);
   const [showAdvanced, setShowAdvanced] = useState<boolean>(false);
   const [socketConnected, setSocketConnected] = useState<boolean>(true);
   const [serverWarning, setServerWarning] = useState<string | null>(null);
