@@ -345,8 +345,7 @@
 import type { StyleOption } from "@/lib/style-prompts";
 
 // Update with your Render backend URL when deployed
-const BACKEND_API_URL =
-  process.env.NEXT_PUBLIC_BACKEND_URL || "https://your-render-app.onrender.com";
+const BACKEND_API_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
 /**
  * Parameters for stylizing an image
