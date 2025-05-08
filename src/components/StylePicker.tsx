@@ -318,6 +318,7 @@ animate-moveGradient"
               step={5}
               onValueChange={(values) => setStrength(values[0] / 100)}
               disabled={isProcessing || !socketConnected}
+              className="cursor-pointer"
             />
           </div>
 
@@ -337,6 +338,7 @@ animate-moveGradient"
               step={1}
               onValueChange={(values) => setIterations(values[0])}
               disabled={isProcessing || !socketConnected}
+              className="cursor-pointer"
             />
           </div>
 
