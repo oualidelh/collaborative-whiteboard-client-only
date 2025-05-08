@@ -57,7 +57,7 @@ const CanvasHeader = ({ socket }: CanvHeaderProps) => {
       </div>
       <div className="flex flex-col items-center gap-2">
         <h3 className="animate-slideFadeInRight">
-          Active Users: {users.length}
+          Active Users: {registeredUsers.length}
         </h3>
         <div className="flex -space-x-2">
           {registeredUsers.map((user) => {

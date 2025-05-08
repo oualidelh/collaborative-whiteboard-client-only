@@ -1,3 +1,4 @@
+// stylePicker for connect backend
 import { useState, useRef, useEffect } from "react";
 import { stylizeImage, cancelStylization } from "@/utils/stylize-client";
 import { StyleOption, getStyleDisplayName } from "@/lib/style-prompts";
