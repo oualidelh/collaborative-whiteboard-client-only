@@ -88,7 +88,7 @@ const HomePage = ({ userData }: HomePageProps) => {
   };
 
   return (
-    <div className="min-h-screen bg-cream-50 flex items-center justify-center p-4">
+    <div className="min-h-screen animate-fadeIn bg-cream-50 flex items-center justify-center p-4">
       <div className="glass-card w-full max-w-md p-8 rounded-lg space-y-6">
         <h1 className="text-center text-2xl font-bold">
           Collaborative Drawing App

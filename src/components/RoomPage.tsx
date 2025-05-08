@@ -30,6 +30,21 @@ const RoomPage = ({ roomId }: { roomId: string }) => {
 
   const router = useRouter();
 
+  const OnPenChange = () => {
+    if (tool === "pen") {
+      setTool("default");
+    } else {
+      setTool("pen");
+    }
+  };
+  const OnEraserChange = () => {
+    if (tool === "eraser") {
+      setTool("default");
+    } else {
+      setTool("eraser");
+    }
+  };
+
   const clear = useCallback(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -94,6 +109,8 @@ const RoomPage = ({ roomId }: { roomId: string }) => {
       <ToolBar
         selectedTool={tool}
         onToolChange={setTool}
+        OnPenChange={OnPenChange}
+        OnEraserChange={OnEraserChange}
         color={color}
         onColorChange={setColor}
         strokeWidth={strokeWidth}

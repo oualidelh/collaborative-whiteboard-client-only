@@ -185,7 +185,7 @@ const Canvas = ({
   return (
     <div
       ref={divRef}
-      className="relative z-0 shadow-md rounded-lg
+      className="relative animate-fadeIn z-0 shadow-md rounded-lg
              w-[90vw] h-[90vw] max-w-[750px] max-h-[750px]
              sm:w-[600px] sm:h-[600px]
              md:w-[700px] md:h-[700px]
@@ -204,7 +204,7 @@ const Canvas = ({
         onMouseMove={throttledMouseMove}
         onMouseDown={onMouseDown}
         onMouseUp={saveCanvasState}
-        className="w-full h-full z-0 bg-white rounded-lg cursor-none"
+        className="w-full h-full animate-fadeIn z-0 bg-white rounded-lg cursor-none"
       />
       <CursorRender socket={socket} divElem={divRef.current} />
     </div>

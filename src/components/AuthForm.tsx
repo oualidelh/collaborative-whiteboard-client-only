@@ -55,7 +55,7 @@ const AuthForm = ({ type }: { type: formType }) => {
   };
 
   return (
-    <div className="min-h-screen bg-cream-50 flex items-center justify-center p-4">
+    <div className="min-h-screen animate-fadeIn bg-cream-50 flex items-center justify-center p-4">
       <div className="glass-card w-full max-w-md p-8 rounded-lg space-y-6">
         <div className="text-center space-y-2">
           <h1 className="text-2xl font-bold ">Welcome Back</h1>

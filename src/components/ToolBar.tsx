@@ -8,6 +8,8 @@ import { StylePicker } from "@/components/StylePicker";
 interface ToolbarProps {
   selectedTool: "default" | "pen" | "eraser";
   onToolChange: (tool: "pen" | "eraser") => void;
+  OnPenChange: () => void;
+  OnEraserChange: () => void;
   color: string;
   onColorChange: (color: string) => void;
   strokeWidth: number;
@@ -21,7 +23,9 @@ interface ToolbarProps {
 
 export const ToolBar = ({
   selectedTool,
-  onToolChange,
+  // onToolChange,
+  OnPenChange,
+  OnEraserChange,
   color,
   onColorChange,
   strokeWidth,
@@ -39,7 +43,7 @@ export const ToolBar = ({
           <Button
             variant={selectedTool === "pen" ? "default" : "outline"}
             size="icon"
-            onClick={() => onToolChange("pen")}
+            onClick={OnPenChange}
             className="hover-lift w-9 h-9"
           >
             {/* <Pencil className="h-4 w-4" /> */}
@@ -51,7 +55,7 @@ export const ToolBar = ({
           <Button
             variant={selectedTool === "eraser" ? "default" : "outline"}
             size="icon"
-            onClick={() => onToolChange("eraser")}
+            onClick={OnEraserChange}
             className="hover-lift w-9 h-9"
           >
             <Eraser className="h-4 w-4" />
