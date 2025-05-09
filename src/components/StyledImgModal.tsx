@@ -42,18 +42,18 @@ const StyledImgModal = ({
         <div className="absolute top-0 w-full z-10 flex justify-between items-center p-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300 ">
           <Tooltip content="Share With Other Members In The Room">
             <button
-              className="text-slate-400 font-medium bg-white/70 p-1 rounded-sm shadow-sm"
+              className="text-slate-800 font-medium bg-white/70 p-1 rounded-sm shadow-sm"
               onClick={shareStyleInCanvas}
             >
               <Share2Icon />
             </button>
           </Tooltip>
-          <p className="text-slate-400 font-medium bg-white/70 p-1 rounded-sm shadow-sm">
-            {styleType}
+          <p className="text-slate-800 font-medium bg-white/70 p-1 rounded-sm shadow-sm">
+            {`${styleType} Style`}
           </p>
           <Tooltip content="Exit">
             <button
-              className="text-slate-400 font-medium bg-white/70 p-1 rounded-sm shadow-sm"
+              className="text-slate-800 font-medium bg-white/70 p-1 rounded-sm shadow-sm"
               onClick={onClose}
             >
               ✖

@@ -186,135 +186,135 @@
 //   return socket;
 // };
 
-import { io, Socket } from "socket.io-client";
-import { toast } from "sonner";
+// import { io, Socket } from "socket.io-client";
+// import { toast } from "sonner";
 
-// socket url
-const SOCKET_URL = "https://collaborative-whiteboard-2xlo.onrender.com";
+// // socket url
+// const SOCKET_URL = "https://collaborative-whiteboard-2xlo.onrender.com";
 
-let socket: Socket | null = null;
-let hasDisconnectedBefore = false;
-let isReconnecting = false;
+// let socket: Socket | null = null;
+// let hasDisconnectedBefore = false;
+// let isReconnecting = false;
 
-// Add a variable to track the last time we sent a large payload
-let lastLargePayloadTime = 0;
-const LARGE_PAYLOAD_COOLDOWN = 2000; // 2-second cooldown
+// // Add a variable to track the last time we sent a large payload
+// let lastLargePayloadTime = 0;
+// const LARGE_PAYLOAD_COOLDOWN = 2000; // 2-second cooldown
 
-export const GetSocket = (): Socket => {
-  if (!socket) {
-    socket = io(SOCKET_URL, {
-      transports: ["websocket"],
-      reconnection: true,
-      reconnectionAttempts: Infinity,
-      reconnectionDelay: 2000,
-      reconnectionDelayMax: 10000,
-      // Increase the timeout for operations
-      timeout: 30000,
-      // Increase maximum payload size
-      // maxHttpBufferSize: 5e6, // 5MB
-    });
+// export const GetSocket = (): Socket => {
+//   if (!socket) {
+//     socket = io(SOCKET_URL, {
+//       transports: ["websocket"],
+//       reconnection: true,
+//       reconnectionAttempts: Infinity,
+//       reconnectionDelay: 2000,
+//       reconnectionDelayMax: 10000,
+//       // Increase the timeout for operations
+//       timeout: 30000,
+//       // Increase maximum payload size
+//       // maxHttpBufferSize: 5e6, // 5MB
+//     });
 
-    socket.on("connect", () => {
-      if (!socket) return;
+//     socket.on("connect", () => {
+//       if (!socket) return;
 
-      if (hasDisconnectedBefore) {
-        const savedRoom = localStorage.getItem("room");
-        const savedUserData = localStorage.getItem("user");
+//       if (hasDisconnectedBefore) {
+//         const savedRoom = localStorage.getItem("room");
+//         const savedUserData = localStorage.getItem("user");
 
-        if (savedRoom && savedUserData) {
-          console.log(
-            "🔁 Rejoining after reconnect:",
-            JSON.parse(savedRoom),
-            JSON.parse(savedUserData)
-          );
-          socket.emit("reconnection-info", {
-            room: JSON.parse(savedRoom),
-            user: JSON.parse(savedUserData),
-          });
-        }
+//         if (savedRoom && savedUserData) {
+//           console.log(
+//             "🔁 Rejoining after reconnect:",
+//             JSON.parse(savedRoom),
+//             JSON.parse(savedUserData)
+//           );
+//           socket.emit("reconnection-info", {
+//             room: JSON.parse(savedRoom),
+//             user: JSON.parse(savedUserData),
+//           });
+//         }
 
-        console.log("✅ Reconnected to server:", socket.id);
-        toast.success("Reconnected to server!");
-      } else {
-        console.log("✅ Initial connection to server:", socket.id);
-      }
+//         console.log("✅ Reconnected to server:", socket.id);
+//         toast.success("Reconnected to server!");
+//       } else {
+//         console.log("✅ Initial connection to server:", socket.id);
+//       }
 
-      // Reset reconnecting flag when successfully connected
-      isReconnecting = false;
-    });
+//       // Reset reconnecting flag when successfully connected
+//       isReconnecting = false;
+//     });
 
-    socket.on("disconnect", (reason) => {
-      hasDisconnectedBefore = true;
-      console.log("❌ Disconnected from server. Reason:", reason);
-      toast.warning(
-        `Disconnected from server. Reason: ${reason}. Trying to reconnect...`
-      );
-      // Don't reload the page here, just let socket.io handle reconnection
-    });
+//     socket.on("disconnect", (reason) => {
+//       hasDisconnectedBefore = true;
+//       console.log("❌ Disconnected from server. Reason:", reason);
+//       toast.warning(
+//         `Disconnected from server. Reason: ${reason}. Trying to reconnect...`
+//       );
+//       // Don't reload the page here, just let socket.io handle reconnection
+//     });
 
-    socket.on("reconnect_attempt", (attemptNumber) => {
-      console.log(`🔄 Trying to reconnect... (Attempt #${attemptNumber})`);
-      isReconnecting = true;
-    });
+//     socket.on("reconnect_attempt", (attemptNumber) => {
+//       console.log(`🔄 Trying to reconnect... (Attempt #${attemptNumber})`);
+//       isReconnecting = true;
+//     });
 
-    socket.on("reconnect", () => {
-      toast.success("Reconnected!");
-      isReconnecting = false;
-    });
+//     socket.on("reconnect", () => {
+//       toast.success("Reconnected!");
+//       isReconnecting = false;
+//     });
 
-    socket.on("reconnect_failed", () => {
-      // Only reload if all reconnection attempts have failed
-      if (!isReconnecting) {
-        toast.error(
-          "Failed to reconnect after multiple attempts. Reloading..."
-        );
-        setTimeout(() => {
-          // window.location.reload();
-        }, 3000); // Give time for the user to see the toast
-      }
-    });
+//     socket.on("reconnect_failed", () => {
+//       // Only reload if all reconnection attempts have failed
+//       if (!isReconnecting) {
+//         toast.error(
+//           "Failed to reconnect after multiple attempts. Reloading..."
+//         );
+//         setTimeout(() => {
+//           // window.location.reload();
+//         }, 3000); // Give time for the user to see the toast
+//       }
+//     });
 
-    socket.on("connect_error", (err) => {
-      // Don't reload immediately on connection error
-      // console.error("Connection error:", err.message);
-      toast.error(
-        `Connection error: ${err.message}. Attempting to reconnect...`
-      );
+//     socket.on("connect_error", (err) => {
+//       // Don't reload immediately on connection error
+//       // console.error("Connection error:", err.message);
+//       toast.error(
+//         `Connection error: ${err.message}. Attempting to reconnect...`
+//       );
 
-      // Let the reconnection system handle it
-      // Only reload if it's a persistent issue
-      if (!isReconnecting) {
-        // Wait to see if reconnection succeeds
-        setTimeout(() => {
-          if (!socket?.connected) {
-            toast.error("Unable to connect. Reloading page in 5 seconds...");
-            setTimeout(() => {
-              // window.location.reload();
-            }, 5000);
-          }
-        }, 10000); // Wait 10 seconds before deciding to reload
-      }
-    });
+//       // Let the reconnection system handle it
+//       // Only reload if it's a persistent issue
+//       if (!isReconnecting) {
+//         // Wait to see if reconnection succeeds
+//         setTimeout(() => {
+//           if (!socket?.connected) {
+//             toast.error("Unable to connect. Reloading page in 5 seconds...");
+//             setTimeout(() => {
+//               // window.location.reload();
+//             }, 5000);
+//           }
+//         }, 10000); // Wait 10 seconds before deciding to reload
+//       }
+//     });
 
-    // Add handler for error events
-    socket.on("error", (error) => {
-      console.error("Socket error:", error);
-      toast.error(`Socket error: ${error.message || "Unknown error"}`);
-    });
-  }
+//     // Add handler for error events
+//     socket.on("error", (error) => {
+//       console.error("Socket error:", error);
+//       toast.error(`Socket error: ${error.message || "Unknown error"}`);
+//     });
+//   }
 
-  return socket;
-};
+//   return socket;
+// };
 
-// Helper function to check if we can send a large payload
-export const canSendLargePayload = (): boolean => {
-  const now = Date.now();
-  if (now - lastLargePayloadTime > LARGE_PAYLOAD_COOLDOWN) {
-    lastLargePayloadTime = now;
-    return true;
-  }
-  return false;
-};
+// // Helper function to check if we can send a large payload
+// export const canSendLargePayload = (): boolean => {
+//   const now = Date.now();
+//   if (now - lastLargePayloadTime > LARGE_PAYLOAD_COOLDOWN) {
+//     lastLargePayloadTime = now;
+//     return true;
+//   }
+//   return false;
+// };
 
 // Safely emit events with large payloads
 // export const safeEmit = <T>(
@@ -359,101 +359,101 @@ export const canSendLargePayload = (): boolean => {
 //   }
 // };
 
-// import { io, Socket } from "socket.io-client";
-// import { toast } from "sonner";
+import { io, Socket } from "socket.io-client";
+import { toast } from "sonner";
 
-// const SOCKET_URL = "http://localhost:5000";
+const SOCKET_URL = "http://localhost:5000";
 
-// let socket: Socket | null = null;
-// let hasDisconnectedBefore = false;
-// let isReconnecting = false;
+let socket: Socket | null = null;
+let hasDisconnectedBefore = false;
+let isReconnecting = false;
 
-// let lastLargePayloadTime = 0;
-// const LARGE_PAYLOAD_COOLDOWN = 2000;
+let lastLargePayloadTime = 0;
+const LARGE_PAYLOAD_COOLDOWN = 2000;
 
-// export const GetSocket = (): Socket => {
-//   if (!socket) {
-//     socket = io(SOCKET_URL, {
-//       transports: ["websocket"],
-//       reconnection: true,
-//       reconnectionAttempts: Infinity,
-//       reconnectionDelay: 2000,
-//       reconnectionDelayMax: 10000,
-//       timeout: 30000,
-//     });
+export const GetSocket = (): Socket => {
+  if (!socket) {
+    socket = io(SOCKET_URL, {
+      transports: ["websocket"],
+      reconnection: true,
+      reconnectionAttempts: Infinity,
+      reconnectionDelay: 2000,
+      reconnectionDelayMax: 10000,
+      timeout: 30000,
+    });
 
-//     socket.on("connect", () => {
-//       if (hasDisconnectedBefore) {
-//         const savedRoom = localStorage.getItem("room");
-//         const savedUserData = localStorage.getItem("user");
+    socket.on("connect", () => {
+      if (hasDisconnectedBefore) {
+        const savedRoom = localStorage.getItem("room");
+        const savedUserData = localStorage.getItem("user");
 
-//         if (savedRoom && savedUserData) {
-//           socket.emit("reconnection-info", {
-//             room: JSON.parse(savedRoom),
-//             user: JSON.parse(savedUserData),
-//           });
-//         }
+        if (savedRoom && savedUserData) {
+          socket?.emit("reconnection-info", {
+            room: JSON.parse(savedRoom),
+            user: JSON.parse(savedUserData),
+          });
+        }
 
-//         toast.success("Reconnected to server!");
-//       }
+        toast.success("Reconnected to server!");
+      }
 
-//       console.log("✅ Connected to server:", socket.id);
-//       isReconnecting = false;
-//     });
+      console.log("✅ Connected to server:", socket?.id);
+      isReconnecting = false;
+    });
 
-//     socket.on("disconnect", (reason) => {
-//       hasDisconnectedBefore = true;
-//       console.warn("❌ Disconnected:", reason);
-//       toast.warning(`Disconnected: ${reason}. Trying to reconnect...`);
-//     });
+    socket.on("disconnect", (reason) => {
+      hasDisconnectedBefore = true;
+      console.warn("❌ Disconnected:", reason);
+      toast.warning(`Disconnected: ${reason}. Trying to reconnect...`);
+    });
 
-//     socket.on("reconnect_attempt", (attempt) => {
-//       console.log(`🔄 Reconnect attempt #${attempt}`);
-//       isReconnecting = true;
-//     });
+    socket.on("reconnect_attempt", (attempt) => {
+      console.log(`🔄 Reconnect attempt #${attempt}`);
+      isReconnecting = true;
+    });
 
-//     socket.on("reconnect", () => {
-//       toast.success("Reconnected!");
-//       isReconnecting = false;
-//     });
+    socket.on("reconnect", () => {
+      toast.success("Reconnected!");
+      isReconnecting = false;
+    });
 
-//     socket.on("reconnect_failed", () => {
-//       if (!isReconnecting) {
-//         toast.error("Failed to reconnect. Reloading...");
-//         setTimeout(() => {
-//           // window.location.reload(); // Keep commented for safety
-//         }, 3000);
-//       }
-//     });
+    socket.on("reconnect_failed", () => {
+      if (!isReconnecting) {
+        toast.error("Failed to reconnect. Reloading...");
+        setTimeout(() => {
+          // window.location.reload(); // Keep commented for safety
+        }, 3000);
+      }
+    });
 
-//     socket.on("connect_error", (err) => {
-//       toast.error(`Connection error: ${err.message}`);
-//       if (!isReconnecting) {
-//         setTimeout(() => {
-//           if (!socket?.connected) {
-//             toast.error("Reloading in 5s due to persistent connection issues");
-//             setTimeout(() => {
-//               // window.location.reload(); // Optional fallback
-//             }, 5000);
-//           }
-//         }, 10000);
-//       }
-//     });
+    socket.on("connect_error", (err) => {
+      toast.error(`Connection error: ${err.message}`);
+      if (!isReconnecting) {
+        setTimeout(() => {
+          if (!socket?.connected) {
+            toast.error("Reloading in 5s due to persistent connection issues");
+            setTimeout(() => {
+              // window.location.reload(); // Optional fallback
+            }, 5000);
+          }
+        }, 10000);
+      }
+    });
 
-//     socket.on("error", (err) => {
-//       console.error("Socket error:", err);
-//       toast.error(`Socket error: ${err.message || "Unknown error"}`);
-//     });
-//   }
+    socket.on("error", (err) => {
+      console.error("Socket error:", err);
+      toast.error(`Socket error: ${err.message || "Unknown error"}`);
+    });
+  }
 
-//   return socket;
-// };
+  return socket;
+};
 
-// export const canSendLargePayload = (): boolean => {
-//   const now = Date.now();
-//   if (now - lastLargePayloadTime > LARGE_PAYLOAD_COOLDOWN) {
-//     lastLargePayloadTime = now;
-//     return true;
-//   }
-//   return false;
-// };
+export const canSendLargePayload = (): boolean => {
+  const now = Date.now();
+  if (now - lastLargePayloadTime > LARGE_PAYLOAD_COOLDOWN) {
+    lastLargePayloadTime = now;
+    return true;
+  }
+  return false;
+};
