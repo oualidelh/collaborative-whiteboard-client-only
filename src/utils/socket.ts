@@ -363,6 +363,7 @@ import { io, Socket } from "socket.io-client";
 import { toast } from "sonner";
 
 const SOCKET_URL = "https://collaborative-whiteboard-2xlo.onrender.com";
+// "http://localhost:5000";
 
 let socket: Socket | null = null;
 let hasDisconnectedBefore = false;
