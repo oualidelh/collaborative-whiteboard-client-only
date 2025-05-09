@@ -7,11 +7,11 @@ import { DefaultEventsMap } from "@socket.io/component-emitter";
 import React, {
   useCallback,
   useEffect,
-  useMemo,
+  // useMemo,
   useRef,
   useState,
 } from "react";
-import { throttle } from "lodash";
+// import { throttle } from "lodash";
 import CursorRender from "./CursorRender";
 import { Sparkles } from "lucide-react";
 
@@ -154,27 +154,47 @@ const Canvas = ({
   }
 
   // Throttle mouse move to avoid spamming socket events
-  const throttledMouseMove = useMemo(() => {
-    return throttle((e: React.MouseEvent<HTMLCanvasElement>) => {
-      const canvas = canvasRef.current;
-      if (!canvas) return;
+  // const throttledMouseMove = useMemo(() => {
+  //   return throttle((e: React.MouseEvent<HTMLCanvasElement>) => {
+  //     const canvas = canvasRef.current;
+  //     if (!canvas) return;
 
-      if (!userData) return;
+  //     if (!userData) return;
 
-      const nativeEvent = e.nativeEvent;
-      const computedCurrentPoint = computePointInCanvas(nativeEvent, canvas);
+  //     const nativeEvent = e.nativeEvent;
+  //     const computedCurrentPoint = computePointInCanvas(nativeEvent, canvas);
 
-      if (!computedCurrentPoint) return;
+  //     if (!computedCurrentPoint) return;
 
-      socket.emit("user-state", {
-        userData,
-        room: roomId,
-        currentPoint: computedCurrentPoint,
-        tool,
-        cursorColor,
-      });
-    }, 100);
-  }, [canvasRef, socket, userData, roomId, tool, cursorColor]);
+  //     socket.emit("user-state", {
+  //       userData,
+  //       room: roomId,
+  //       currentPoint: computedCurrentPoint,
+  //       tool,
+  //       cursorColor,
+  //     });
+  //   });
+  // }, [canvasRef, socket, userData, roomId, tool, cursorColor]);
+
+  const mouseMoveHandler = (e: React.MouseEvent<HTMLCanvasElement>) => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+
+    if (!userData) return;
+
+    const nativeEvent = e.nativeEvent;
+    const computedCurrentPoint = computePointInCanvas(nativeEvent, canvas);
+
+    if (!computedCurrentPoint) return;
+
+    socket.emit("user-state", {
+      userData,
+      room: roomId,
+      currentPoint: computedCurrentPoint,
+      tool,
+      cursorColor,
+    });
+  };
 
   const saveCanvasState = () => {
     if (!canvasRef.current) return;
@@ -201,7 +221,7 @@ const Canvas = ({
         ref={canvasRef}
         width={750}
         height={750}
-        onMouseMove={throttledMouseMove}
+        onMouseMove={mouseMoveHandler}
         onMouseDown={onMouseDown}
         onMouseUp={saveCanvasState}
         className="w-full h-full animate-fadeIn z-0 bg-white rounded-lg cursor-none"
