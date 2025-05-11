@@ -265,7 +265,7 @@ animate-moveGradient"
       </Tooltip>
 
       {isOpen && (
-        <div className="absolute left-0 md:left-auto md:right-0 top-full z-50 mt-2 w-72 rounded-lg border bg-card p-4 shadow-lg">
+        <div className="absolute right-0 md:left-auto md:right-0 top-full z-50 mt-2 w-72 rounded-lg border bg-card p-4 shadow-lg">
           <div className="mb-4 flex items-center justify-between">
             <h3 className="text-sm font-semibold">Apply AI Style</h3>
             <Button

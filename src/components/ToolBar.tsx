@@ -72,63 +72,64 @@ export const ToolBar = ({
             <Trash2 className="h-4 w-4" />
           </Button>
         </Tooltip>
+        <div className="flex items-center gap-2">
+          <Tooltip content="Choose Color">
+            <div className="relative">
+              <input
+                type="color"
+                value={color}
+                onChange={(e) => onColorChange(e.target.value)}
+                className="w-9 h-9 rounded cursor-pointer opacity-0 absolute inset-0"
+              />
+              <div
+                className="w-9 h-9 rounded border-2 border-white/50 shadow-sm"
+                style={{ backgroundColor: color }}
+              />
+            </div>
+          </Tooltip>
+        </div>
       </div>
 
       <div className="h-6 w-px bg-cream-200" />
 
-      <div className="flex items-center gap-2">
-        <Tooltip content="Choose Color">
-          <div className="relative">
-            <input
-              type="color"
-              value={color}
-              onChange={(e) => onColorChange(e.target.value)}
-              className="w-9 h-9 rounded cursor-pointer opacity-0 absolute inset-0"
-            />
-            <div
-              className="w-9 h-9 rounded border-2 border-white/50 shadow-sm"
-              style={{ backgroundColor: color }}
-            />
-          </div>
+      <div className="flex items-center gap-2 flex-nowrap">
+        <div className="h-6 w-px bg-cream-200" />
+        <div className="flex items-center gap-4 flex-1 max-w-xs">
+          <span className="text-sm text-charcoal-700 whitespace-nowrap">
+            Stroke Width
+          </span>
+          <Slider
+            value={[strokeWidth]}
+            onValueChange={(value) => onStrokeWidthChange(value[0])}
+            min={1}
+            max={20}
+            step={1}
+            className="w-32 hover:cursor-pointer"
+          />
+        </div>
+        <div className="h-6 w-px bg-cream-200 hidden md:block" />
+        <Tooltip content="Transform Your Draw Into Styles">
+          <StylePicker
+            canvasRef={canvasRef}
+            onStyleApplied={onStyleApplied}
+            onLoading={onLoading}
+          />
         </Tooltip>
-      </div>
 
-      <div className="h-6 w-px bg-cream-200" />
-      <div className="flex items-center gap-4 flex-1 max-w-xs">
-        <span className="text-sm text-charcoal-700 whitespace-nowrap">
-          Stroke Width
-        </span>
-        <Slider
-          value={[strokeWidth]}
-          onValueChange={(value) => onStrokeWidthChange(value[0])}
-          min={1}
-          max={20}
-          step={1}
-          className="w-32 hover:cursor-pointer"
-        />
-      </div>
-      <div className="h-6 w-px bg-cream-200 hidden md:block" />
-      <Tooltip content="Transform Your Draw Into Styles">
-        <StylePicker
-          canvasRef={canvasRef}
-          onStyleApplied={onStyleApplied}
-          onLoading={onLoading}
-        />
-      </Tooltip>
-
-      <Tooltip content="Leave Room">
-        <Button
-          variant={"default"}
-          size="icon"
-          onClick={leaveRoom}
-          className=" w-9 h-9"
-        >
-          <LogOut className="h-4 w-4" />
-          {/* <p className="opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+        <Tooltip content="Leave Room">
+          <Button
+            variant={"default"}
+            size="icon"
+            onClick={leaveRoom}
+            className=" w-9 h-9"
+          >
+            <LogOut className="h-4 w-4" />
+            {/* <p className="opacity-0 transition-opacity duration-300 group-hover:opacity-100">
                 Log-Out
               </p> */}
-        </Button>
-      </Tooltip>
+          </Button>
+        </Tooltip>
+      </div>
     </div>
   );
 };
