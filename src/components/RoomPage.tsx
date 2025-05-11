@@ -103,7 +103,7 @@ const RoomPage = ({ roomId }: { roomId: string }) => {
   return (
     <div
       ref={divRef}
-      className="flex relative flex-col justify-center items-center gap-4 py-2"
+      className="flex w-full h-auto relative flex-col justify-center items-center gap-4 py-2"
     >
       <CanvasHeader socket={socket} />
       <ToolBar

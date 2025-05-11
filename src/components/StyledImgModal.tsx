@@ -37,7 +37,7 @@ const StyledImgModal = ({
     >
       <div
         onClick={(e) => e.stopPropagation()}
-        className="group relative w-full overflow-hidden border-2 border-solid border-gray-400 rounded-md max-w-2xl lg:h-[500px] h-[90%] md:h-[85%]"
+        className="group relative w-[90%] overflow-hidden border-2 border-solid border-gray-400 rounded-md max-w-2xl lg:h-[500px] h-[90%] md:h-[85%]"
       >
         <div className="absolute top-0 w-full z-10 flex justify-between items-center p-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300 ">
           <Tooltip content="Share With Other Members In The Room">
