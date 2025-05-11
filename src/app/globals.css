@@ -64,3 +64,6 @@
 .glass-card {
   @apply bg-white/80 backdrop-blur-sm border border-white/20 shadow-lg rounded-lg;
 }
+canvas {
+  touch-action: none;
+}

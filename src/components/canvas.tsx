@@ -43,7 +43,7 @@ const Canvas = ({
   socket,
   isLoadingImg,
 }: CanvasProps) => {
-  const { onMouseDown } = useDraw(createLine, canvasRef);
+  const { onMouseDown, onTouchStart } = useDraw(createLine, canvasRef);
   const [cursorColor, setCursorColor] = useState<string>("");
   const divRef = useRef<HTMLDivElement | null>(null);
 
@@ -176,6 +176,7 @@ const Canvas = ({
   //   });
   // }, [canvasRef, socket, userData, roomId, tool, cursorColor]);
 
+  // mouseMoveHandler
   const mouseMoveHandler = (e: React.MouseEvent<HTMLCanvasElement>) => {
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -186,6 +187,30 @@ const Canvas = ({
     const computedCurrentPoint = computePointInCanvas(nativeEvent, canvas);
 
     if (!computedCurrentPoint) return;
+
+    socket.emit("user-state", {
+      userData,
+      room: roomId,
+      currentPoint: computedCurrentPoint,
+      tool,
+      cursorColor,
+    });
+  };
+
+  const touchMoveHandler = (e: React.TouchEvent<HTMLCanvasElement>) => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+
+    if (!userData) return;
+
+    const touch = e.touches[0];
+    if (!touch) return;
+
+    const rect = canvas.getBoundingClientRect();
+    const computedCurrentPoint = {
+      x: (touch.clientX - rect.left) * (canvas.width / rect.width),
+      y: (touch.clientY - rect.top) * (canvas.height / rect.height),
+    };
 
     socket.emit("user-state", {
       userData,
@@ -222,8 +247,11 @@ const Canvas = ({
         width={750}
         height={750}
         onMouseMove={mouseMoveHandler}
+        onTouchMove={touchMoveHandler}
         onMouseDown={onMouseDown}
         onMouseUp={saveCanvasState}
+        onTouchStart={onTouchStart}
+        onTouchEnd={saveCanvasState}
         className="w-full h-full animate-fadeIn z-0 bg-white rounded-lg cursor-none"
       />
       <CursorRender socket={socket} divElem={divRef.current} />
