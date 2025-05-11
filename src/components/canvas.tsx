@@ -203,14 +203,11 @@ const Canvas = ({
 
     if (!userData) return;
 
-    const touch = e.touches[0];
+    const touch: React.Touch = e.touches[0];
     if (!touch) return;
 
-    const rect = canvas.getBoundingClientRect();
-    const computedCurrentPoint = {
-      x: (touch.clientX - rect.left) * (canvas.width / rect.width),
-      y: (touch.clientY - rect.top) * (canvas.height / rect.height),
-    };
+    const computedCurrentPoint = computePointInCanvas(touch, canvas);
+    if (!computedCurrentPoint) return;
 
     socket.emit("user-state", {
       userData,
