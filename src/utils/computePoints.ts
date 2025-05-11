@@ -7,7 +7,7 @@ export interface Point {
  * Computes the relative position of the cursor inside the canvas.
  */
 export const computePointInCanvas = (
-  e: MouseEvent,
+  e: MouseEvent | React.Touch,
   canvas: HTMLCanvasElement | null
 ): Point | null => {
   if (!canvas) return null;
