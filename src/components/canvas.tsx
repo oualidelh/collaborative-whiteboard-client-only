@@ -43,7 +43,7 @@ const Canvas = ({
   socket,
   isLoadingImg,
 }: CanvasProps) => {
-  const { onMouseDown } = useDraw(createLine, canvasRef);
+  const { onMouseDown, onTouchStart } = useDraw(createLine, canvasRef);
   const [cursorColor, setCursorColor] = useState<string>("");
   const divRef = useRef<HTMLDivElement | null>(null);
 
@@ -224,6 +224,8 @@ const Canvas = ({
         onMouseMove={mouseMoveHandler}
         onMouseDown={onMouseDown}
         onMouseUp={saveCanvasState}
+        onTouchStart={onTouchStart}
+        onTouchEnd={saveCanvasState}
         className="w-full h-full animate-fadeIn z-0 bg-white rounded-lg cursor-none"
       />
       <CursorRender socket={socket} divElem={divRef.current} />
