@@ -197,6 +197,30 @@ const Canvas = ({
     });
   };
 
+  const touchMoveHandler = (e: React.TouchEvent<HTMLCanvasElement>) => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+
+    if (!userData) return;
+
+    const touch = e.touches[0];
+    if (!touch) return;
+
+    const rect = canvas.getBoundingClientRect();
+    const computedCurrentPoint = {
+      x: (touch.clientX - rect.left) * (canvas.width / rect.width),
+      y: (touch.clientY - rect.top) * (canvas.height / rect.height),
+    };
+
+    socket.emit("user-state", {
+      userData,
+      room: roomId,
+      currentPoint: computedCurrentPoint,
+      tool,
+      cursorColor,
+    });
+  };
+
   const saveCanvasState = () => {
     if (!canvasRef.current) return;
     const state = canvasRef.current.toDataURL();
@@ -223,6 +247,7 @@ const Canvas = ({
         width={750}
         height={750}
         onMouseMove={mouseMoveHandler}
+        onTouchMove={touchMoveHandler}
         onMouseDown={onMouseDown}
         onMouseUp={saveCanvasState}
         onTouchStart={onTouchStart}
