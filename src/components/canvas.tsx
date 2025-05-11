@@ -176,6 +176,7 @@ const Canvas = ({
   //   });
   // }, [canvasRef, socket, userData, roomId, tool, cursorColor]);
 
+  // mouseMoveHandler
   const mouseMoveHandler = (e: React.MouseEvent<HTMLCanvasElement>) => {
     const canvas = canvasRef.current;
     if (!canvas) return;
