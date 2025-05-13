@@ -1,6 +1,20 @@
 import AuthForm from "@/components/AuthForm";
+import { createClient } from "@/utils/supabase/server";
+import { redirect } from "next/navigation";
 import React from "react";
 
-const SignUp = () => <AuthForm type="signUp" />;
+export default async function SignUp() {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
 
-export default SignUp;
+  if (user) {
+    redirect("/");
+  }
+  return (
+    <div>
+      <AuthForm type="signUp" />
+    </div>
+  );
+}
